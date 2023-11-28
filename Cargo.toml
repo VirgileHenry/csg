@@ -1,0 +1,15 @@
+[package]
+name = "csg-files"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+cgmath = "0.18.0"
+serde = { version="1.0.193", features=["derive"], optional=true }
+serde-binary = { version="0.5.0", optional=true }
+serde_json = { version="1.0.108", optional=true }
+
+
+[features]
+default = ["serde"]
+serde = ["dep:serde", "dep:serde_json", "dep:serde-binary", "cgmath/serde"]
