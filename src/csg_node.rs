@@ -20,3 +20,15 @@ pub enum Node {
         radius: f32,
     },
 }
+
+impl Node {
+    pub fn id(&self) -> u8 {
+        match &self {
+            Node::PrimitiveSphere { .. } => 0,
+            Node::OpBinCut => 1,
+            Node::OpBinInter => 2,
+            Node::OpBinUnion => 3,
+            Node::ModRounder { .. } => 4,
+        }
+    }
+}
