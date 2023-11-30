@@ -6,7 +6,7 @@ use serde::{Serialize, Deserialize};
 use crate::{
     csg_modifiers::Modifier,
     csg_binary_operations::BinOp,
-    csg_primitives::Primitive, csg_traits::{distance_func::DistanceFunc, csg_tree_size::CsgTreeSize, binarize::BinarizeCsgTree, CsgTrait},
+    csg_primitives::Primitive, csg_traits::{distance_func::DistanceFunc, csg_tree_size::CsgTreeSize, binarize::BinarizeCsgTree, CsgTrait, node_iter::NodeIter, CsgBinTrait},
 };
 
 
@@ -47,7 +47,21 @@ impl BinarizeCsgTree for BinObject {
     }
 }
 
+impl NodeIter for BinObject {
+    fn nodes(&self) -> impl Iterator<Item = crate::csg_node::Node> {
+        // I hate the fact that I have to collect them and into iter again,
+        // but the compiler will shout that the opaque types are not the same.
+        // hopefully the compiler will also optimize this away.
+        match self {
+            BinObject::Primitive(pr) => pr.nodes().collect::<Vec<_>>().into_iter(),
+            BinObject::BinaryOperation(op) => op.nodes().collect::<Vec<_>>().into_iter(),
+            BinObject::Modifier(mo) => mo.nodes().collect::<Vec<_>>().into_iter(),
+        }
+    }
+}
+
 impl CsgTrait for BinObject {}
+impl CsgBinTrait for BinObject {}
 
 impl From<Primitive> for BinObject {
     fn from(value: Primitive) -> Self {

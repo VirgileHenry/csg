@@ -4,7 +4,7 @@ use std::num::NonZeroUsize;
 use serde::{Serialize, Deserialize};
 use crate::{
     csg_binary_object::BinObject,
-    csg_traits::{distance_func::DistanceFunc, csg_tree_size::CsgTreeSize, binarize::BinarizeCsgTree, CsgTrait}
+    csg_traits::{distance_func::DistanceFunc, csg_tree_size::CsgTreeSize, binarize::BinarizeCsgTree, CsgTrait, node_iter::NodeIter, CsgBinTrait}, csg_node::Node
 };
 
 use super::BinOp;
@@ -44,4 +44,11 @@ impl BinarizeCsgTree for BinUnion {
     }
 }
 
+impl NodeIter for BinUnion {
+    fn nodes(&self) -> impl Iterator<Item = crate::csg_node::Node> {
+        std::iter::once(Node::OpBinUnion).chain(self.children.0.nodes()).chain(self.children.1.nodes())
+    }
+}
+
 impl CsgTrait for BinUnion {}
+impl CsgBinTrait for BinUnion {}

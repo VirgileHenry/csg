@@ -7,7 +7,7 @@ use std::num::NonZeroUsize;
 #[cfg(feature="serde")]
 use serde::{Serialize, Deserialize};
 
-use crate::csg_traits::{distance_func::DistanceFunc, csg_tree_size::CsgTreeSize, binarize::BinarizeCsgTree};
+use crate::csg_traits::{distance_func::DistanceFunc, csg_tree_size::CsgTreeSize, binarize::BinarizeCsgTree, CsgTrait, node_iter::NodeIter, CsgBinTrait};
 
 use self::{substraction::Cut, binary_intersection::BinInter, binary_union::BinUnion};
 
@@ -45,6 +45,22 @@ impl BinarizeCsgTree for BinOp {
         Some(self.into())
     }
 }
+
+impl NodeIter for BinOp {
+    fn nodes(&self) -> impl Iterator<Item = crate::csg_node::Node> {
+        // I hate the fact that I have to collect them and into iter again,
+        // but the compiler will shout that the opaque types are not the same.
+        // hopefully the compiler will also optimize this away.
+        match self {
+            BinOp::Substraction(sub) => sub.nodes().collect::<Vec<_>>().into_iter(),
+            BinOp::Intersection(int) => int.nodes().collect::<Vec<_>>().into_iter(),
+            BinOp::Union(uni) => uni.nodes().collect::<Vec<_>>().into_iter(),
+        }
+    }
+}
+
+impl CsgTrait for BinOp {}
+impl CsgBinTrait for BinOp {}
 
 impl From<BinInter> for BinOp {
     fn from(value: BinInter) -> Self {

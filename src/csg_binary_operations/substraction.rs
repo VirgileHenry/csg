@@ -2,18 +2,18 @@ use std::num::NonZeroUsize;
 
 #[cfg(feature="serde")]
 use serde::{Serialize, Deserialize};
-use crate::{csg_object::Object, csg_traits::{distance_func::DistanceFunc, csg_tree_size::CsgTreeSize, binarize::BinarizeCsgTree}};
+use crate::{csg_traits::{distance_func::DistanceFunc, csg_tree_size::CsgTreeSize, binarize::BinarizeCsgTree, node_iter::NodeIter, CsgTrait, CsgBinTrait}, csg_binary_object::BinObject, csg_node::Node};
 
 use super::BinOp;
 
 #[cfg_attr(feature="serde", derive(Serialize, Deserialize))]
 #[derive(Debug, Clone)]
 pub struct Cut {
-    cutted_cutter: Box<(Object, Object)>,
+    cutted_cutter: Box<(BinObject, BinObject)>,
 }
 
 impl Cut {
-    pub fn new(cutted: Object, cutter: Object) -> Self {
+    pub fn new(cutted: BinObject, cutter: BinObject) -> Self {
         Cut {
             cutted_cutter: Box::new((cutted, cutter)),
         }
@@ -39,3 +39,12 @@ impl BinarizeCsgTree for Cut {
         Some(op.into())
     }
 }
+
+impl NodeIter for Cut {
+    fn nodes(&self) -> impl Iterator<Item = crate::csg_node::Node> {
+        std::iter::once(Node::OpBinCut).chain(self.cutted_cutter.0.nodes()).chain(self.cutted_cutter.1.nodes())
+    }
+}
+
+impl CsgTrait for Cut {}
+impl CsgBinTrait for Cut {}

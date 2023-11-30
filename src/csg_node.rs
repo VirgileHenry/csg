@@ -1,0 +1,22 @@
+
+/// A node is a compact representation of a binary op, modifier or primitive.
+/// It only contains info about the current object, not on children.
+/// Therefore, some nodes contain no info at all.
+#[repr(u8)]
+pub enum Node {
+    // primitives (no following children)
+    PrimitiveSphere {
+        center: cgmath::Vector3<f32>,
+        radius: f32,
+    },
+
+    // binary operations (two following children)
+    OpBinCut,
+    OpBinInter,
+    OpBinUnion,
+
+    // modifiers (one following child)
+    ModRounder {
+        radius: f32,
+    },
+}

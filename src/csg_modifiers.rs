@@ -3,7 +3,7 @@ use std::num::NonZeroUsize;
 #[cfg(feature="serde")]
 use serde::{Serialize, Deserialize};
 
-use crate::{csg_binary_object::BinObject, csg_traits::{distance_func::DistanceFunc, csg_tree_size::CsgTreeSize, binarize::BinarizeCsgTree}};
+use crate::{csg_binary_object::BinObject, csg_traits::{distance_func::DistanceFunc, csg_tree_size::CsgTreeSize, binarize::BinarizeCsgTree, CsgTrait, CsgBinTrait, node_iter::NodeIter}, csg_node::Node};
 
 /// Trait for any Csg operation object.
 #[cfg_attr(feature="serde", derive(Serialize, Deserialize))]
@@ -35,3 +35,14 @@ impl<T: BinarizeCsgTree> BinarizeCsgTree for Modifier<T> {
         }
     }
 }
+
+impl<T: NodeIter> NodeIter for Modifier<T> {
+    fn nodes(&self) -> impl Iterator<Item = crate::csg_node::Node> {
+        match self {
+            Modifier::Rounding(obj, radius) => std::iter::once(Node::ModRounder { radius: *radius, }).chain(obj.nodes())
+        }
+    }
+}
+
+impl<T: CsgTrait> CsgTrait for Modifier<T> {}
+impl<T: CsgBinTrait> CsgBinTrait for Modifier<T> {}
