@@ -1,0 +1,58 @@
+pub mod union;
+pub mod intersection;
+
+use std::num::NonZeroUsize;
+
+#[cfg(feature="serde")]
+use serde::{Serialize, Deserialize};
+use crate::{csg_binary_object::BinObject, csg_traits::{distance_func::DistanceFunc, binarize::BinarizeCsgTree, csg_tree_size::CsgTreeSize, CsgTrait}};
+use self::{union::Union, intersection::Inter};
+
+/// Trait for any Csg operation object.
+#[cfg_attr(feature="serde", derive(Serialize, Deserialize))]
+#[derive(Debug, Clone)]
+pub enum Op {
+    Union(Union),
+    Intersection(Inter),
+}
+
+impl DistanceFunc for Op {
+    fn distance_function(&self, at: cgmath::Vector3<f32>) -> f32 {
+        match self {
+            Op::Union(union) => union.distance_function(at),
+            Op::Intersection(inter) => inter.distance_function(at),
+        }
+    }
+}
+
+impl BinarizeCsgTree for Op {
+    fn binarize(self) -> Option<BinObject> {
+        match self {
+            Op::Union(union) => union.binarize(),
+            Op::Intersection(inter) => inter.binarize(),
+        }
+    }
+}
+
+impl CsgTreeSize for Op {
+    fn size(&self) -> NonZeroUsize {
+        match self {
+            Op::Union(union) => union.size(),
+            Op::Intersection(inter) => inter.size(),
+        }
+    }
+}
+
+impl CsgTrait for Op {}
+
+impl From<Union> for Op {
+    fn from(value: Union) -> Self {
+        Op::Union(value)
+    }
+}
+
+impl From<Inter> for Op {
+    fn from(value: Inter) -> Self {
+        Op::Intersection(value)
+    }
+}
