@@ -24,11 +24,11 @@ pub enum Node {
 impl Node {
     pub fn id(&self) -> u8 {
         match &self {
-            Node::PrimitiveSphere { .. } => 0,
-            Node::OpBinCut => 1,
-            Node::OpBinInter => 2,
-            Node::OpBinUnion => 3,
-            Node::ModRounder { .. } => 4,
+            Node::PrimitiveSphere { .. } => 1,
+            Node::OpBinCut => 2,
+            Node::OpBinInter => 3,
+            Node::OpBinUnion => 4,
+            Node::ModRounder { .. } => 5,
         }
     }
 }
