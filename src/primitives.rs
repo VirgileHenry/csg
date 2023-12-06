@@ -23,7 +23,7 @@ pub enum Primitive {
 }
 
 impl DistanceFunc for Primitive {
-    fn distance_function(&self, at: cgmath::Vector3<f32>) -> f32 {
+    fn distance_function(&self, at: glam::Vec3) -> f32 {
         match self {
             Primitive::Sphere(sphere) => sphere.distance_function(at),
         }

@@ -17,7 +17,7 @@ pub enum Op {
 }
 
 impl DistanceFunc for Op {
-    fn distance_function(&self, at: cgmath::Vector3<f32>) -> f32 {
+    fn distance_function(&self, at: glam::Vec3) -> f32 {
         match self {
             Op::Union(union) => union.distance_function(at),
             Op::Intersection(inter) => inter.distance_function(at),

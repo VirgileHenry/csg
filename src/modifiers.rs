@@ -13,7 +13,7 @@ pub enum Modifier<T> {
 }
 
 impl<T: DistanceFunc> DistanceFunc for Modifier<T> {
-    fn distance_function(&self, at: cgmath::Vector3<f32>) -> f32 {
+    fn distance_function(&self, at: glam::Vec3) -> f32 {
         match self {
             Modifier::Rounding(obj, radius) => obj.distance_function(at) -  radius,
         }

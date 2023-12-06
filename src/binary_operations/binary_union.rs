@@ -22,7 +22,7 @@ impl BinUnion {
 }
 
 impl DistanceFunc for BinUnion {
-    fn distance_function(&self, at: cgmath::Vector3<f32>) -> f32 {
+    fn distance_function(&self, at: glam::Vec3) -> f32 {
         self.children.0.distance_function(at).max(self.children.1.distance_function(at))
     }
 }

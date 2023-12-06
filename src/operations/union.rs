@@ -21,7 +21,7 @@ impl Union {
 }
 
 impl DistanceFunc for Union {
-    fn distance_function(&self, at: cgmath::Vector3<f32>) -> f32 {
+    fn distance_function(&self, at: glam::Vec3) -> f32 {
         self.children.iter().map(|o| o.distance_function(at))
             .fold(f32::INFINITY, |a, b| a.min(b))
     }

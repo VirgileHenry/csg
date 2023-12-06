@@ -6,7 +6,7 @@ use serde::{Serialize, Deserialize};
 use crate::{
     modifiers::Modifier,
     binary_operations::BinOp,
-    csg_primitives::Primitive, traits::{distance_func::DistanceFunc, csg_tree_size::CsgTreeSize, binarize::BinarizeCsgTree, CsgTrait, node_iter::NodeIter, CsgBinTrait},
+    primitives::Primitive, traits::{distance_func::DistanceFunc, csg_tree_size::CsgTreeSize, binarize::BinarizeCsgTree, CsgTrait, node_iter::NodeIter, CsgBinTrait},
 };
 
 
@@ -22,7 +22,7 @@ pub enum BinObject {
 }
 
 impl DistanceFunc for BinObject {
-    fn distance_function(&self, at: cgmath::Vector3<f32>) -> f32 {
+    fn distance_function(&self, at: glam::Vec3) -> f32 {
         match self {
             BinObject::Primitive(pr) => pr.distance_function(at),
             BinObject::BinaryOperation(op) => op.distance_function(at),

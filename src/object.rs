@@ -9,7 +9,7 @@ use crate::traits::csg_tree_size::CsgTreeSize;
 use crate::traits::distance_func::DistanceFunc;
 use crate::modifiers::Modifier;
 use crate::operations::Op;
-use crate::csg_primitives::Primitive;
+use crate::primitives::Primitive;
 
 /// A Csg object can be any one of a primitive, operation, binary operation, modifier.
 /// The entire object is a tree like structure.
@@ -25,7 +25,7 @@ pub enum Object {
 }
 
 impl DistanceFunc for Object {
-    fn distance_function(&self, at: cgmath::Vector3<f32>) -> f32 {
+    fn distance_function(&self, at: glam::Vec3) -> f32 {
         match self {
             Object::Primitive(pr) => pr.distance_function(at),
             Object::Operation(op) => op.distance_function(at),

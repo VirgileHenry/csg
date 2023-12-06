@@ -24,7 +24,7 @@ impl Inter {
 }
 
 impl DistanceFunc for Inter {
-    fn distance_function(&self, at: cgmath::Vector3<f32>) -> f32 {
+    fn distance_function(&self, at: glam::Vec3) -> f32 {
         self.children.iter().map(|o| o.distance_function(at))
             .fold(f32::NEG_INFINITY, |a, b| a.max(b))
     }

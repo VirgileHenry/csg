@@ -6,7 +6,7 @@
 pub enum Node {
     // primitives (no following children)
     PrimitiveSphere {
-        center: cgmath::Vector3<f32>,
+        center: glam::Vec3,
         radius: f32,
     },
 

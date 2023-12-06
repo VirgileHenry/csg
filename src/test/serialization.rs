@@ -1,7 +1,7 @@
 use crate::{
     object::Object,
     operations::{Op, union::Union},
-    csg_primitives::{Primitive, sphere::CsgSphere}
+    primitives::{Primitive, sphere::CsgSphere}
 };
 
 fn assert_object_is_serialize_json_consistent(obj: Object) {

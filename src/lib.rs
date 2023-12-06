@@ -4,7 +4,7 @@ pub mod modifiers;
 pub mod node;
 pub mod object;
 pub mod operations;
-pub mod csg_primitives;
+pub mod primitives;
 pub mod traits;
 
 #[cfg(test)]

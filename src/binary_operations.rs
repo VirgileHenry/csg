@@ -21,7 +21,7 @@ pub enum BinOp {
 }
 
 impl DistanceFunc for BinOp {
-    fn distance_function(&self, at: cgmath::Vector3<f32>) -> f32 {
+    fn distance_function(&self, at: glam::Vec3) -> f32 {
         match self {
             BinOp::Substraction(sub) => sub.distance_function(at),
             BinOp::Intersection(int) => int.distance_function(at),

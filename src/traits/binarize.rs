@@ -1,4 +1,4 @@
-use crate::csg_binary_object::BinObject;
+use crate::binary_object::BinObject;
 
 
 /// The Binarize Csg Tree allow to build binary csg objects from regular csg objects.
