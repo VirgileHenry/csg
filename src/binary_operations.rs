@@ -7,7 +7,7 @@ use std::num::NonZeroUsize;
 #[cfg(feature="serde")]
 use serde::{Serialize, Deserialize};
 
-use crate::csg_traits::{distance_func::DistanceFunc, csg_tree_size::CsgTreeSize, binarize::BinarizeCsgTree, CsgTrait, node_iter::NodeIter, CsgBinTrait};
+use crate::traits::{distance_func::DistanceFunc, csg_tree_size::CsgTreeSize, binarize::BinarizeCsgTree, CsgTrait, node_iter::NodeIter, CsgBinTrait};
 
 use self::{substraction::Cut, binary_intersection::BinInter, binary_union::BinUnion};
 
@@ -41,13 +41,13 @@ impl CsgTreeSize for BinOp {
 }
 
 impl BinarizeCsgTree for BinOp {
-    fn binarize(self) -> Option<crate::csg_binary_object::BinObject> {
+    fn binarize(self) -> Option<crate::binary_object::BinObject> {
         Some(self.into())
     }
 }
 
 impl NodeIter for BinOp {
-    fn nodes(&self) -> impl Iterator<Item = crate::csg_node::Node> {
+    fn nodes(&self) -> impl Iterator<Item = crate::node::Node> {
         // I hate the fact that I have to collect them and into iter again,
         // but the compiler will shout that the opaque types are not the same.
         // hopefully the compiler will also optimize this away.

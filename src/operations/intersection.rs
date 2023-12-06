@@ -3,31 +3,34 @@ use std::num::NonZeroUsize;
 #[cfg(feature="serde")]
 use serde::{Serialize, Deserialize};
 use crate::{
-    csg_object::Object,
-    csg_binary_object::BinObject,
-    csg_traits::{distance_func::DistanceFunc, binarize::BinarizeCsgTree, csg_tree_size::CsgTreeSize, CsgTrait}, csg_binary_operations::{BinOp, binary_union::BinUnion}
+    object::Object,
+    binary_object::BinObject,
+    binary_operations::{
+        BinOp, binary_intersection::BinInter,
+        
+    }, traits::{distance_func::DistanceFunc, binarize::BinarizeCsgTree, csg_tree_size::CsgTreeSize, CsgTrait},
 };
 
 #[cfg_attr(feature="serde", derive(Serialize, Deserialize))]
 #[derive(Debug, Clone)]
-pub struct Union {
+pub struct Inter {
     children: Vec<Object>,
 }
 
-impl Union {
+impl Inter {
     pub fn new(from: Vec<Object>) -> Self {
-        Union { children: from }
+        Inter { children: from }
     }
 }
 
-impl DistanceFunc for Union {
+impl DistanceFunc for Inter {
     fn distance_function(&self, at: cgmath::Vector3<f32>) -> f32 {
         self.children.iter().map(|o| o.distance_function(at))
-            .fold(f32::INFINITY, |a, b| a.min(b))
+            .fold(f32::NEG_INFINITY, |a, b| a.max(b))
     }
 }
 
-impl BinarizeCsgTree for Union {
+impl BinarizeCsgTree for Inter {
     fn binarize(self) -> Option<BinObject> {
         match self.children.len() {
             0 => None, // op with no childs is an empty object
@@ -36,12 +39,12 @@ impl BinarizeCsgTree for Union {
                 let middle = more / 2;
                 let mut second = self.children;
                 let first = second.drain(middle..).collect::<Vec<_>>();
-                // consider the two parts as unions, and binarize them
-                let left = Union::new(first).binarize();
-                let right = Union::new(second).binarize();
+                // consider the two parts as intersections, and binarize them
+                let left = Inter::new(first).binarize();
+                let right = Inter::new(second).binarize();
                 match (left, right) {
                     (Some(left), Some(right)) => {
-                        let op: BinOp = BinUnion::new(left, right).into();
+                        let op: BinOp = BinInter::new(left, right).into();
                         Some(op.into())
                     },
                     (Some(child), None) | (None, Some(child)) => Some(child),
@@ -52,7 +55,7 @@ impl BinarizeCsgTree for Union {
     }
 }
 
-impl CsgTreeSize for Union {
+impl CsgTreeSize for Inter {
     fn size(&self) -> NonZeroUsize {
         let childs_size: usize = self.children.iter().map(|o| o.size().get()).sum();
         unsafe { NonZeroUsize::new_unchecked(1 + childs_size) }
@@ -60,4 +63,4 @@ impl CsgTreeSize for Union {
 }
 
 
-impl CsgTrait for Union {}
+impl CsgTrait for Inter {}

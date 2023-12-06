@@ -2,7 +2,7 @@ use cgmath::InnerSpace;
 #[cfg(feature="serde")]
 use serde::{Serialize, Deserialize};
 
-use crate::{csg_traits::{distance_func::DistanceFunc, CsgTrait, node_iter::NodeIter, csg_tree_size::CsgTreeSize, binarize::BinarizeCsgTree, CsgBinTrait}, csg_node::Node};
+use crate::{traits::{distance_func::DistanceFunc, CsgTrait, node_iter::NodeIter, csg_tree_size::CsgTreeSize, binarize::BinarizeCsgTree, CsgBinTrait}, node::Node};
 
 use super::Primitive;
 
@@ -35,14 +35,14 @@ impl CsgTreeSize for CsgSphere {
 }
 
 impl BinarizeCsgTree for CsgSphere {
-    fn binarize(self) -> Option<crate::csg_binary_object::BinObject> {
+    fn binarize(self) -> Option<crate::binary_object::BinObject> {
         let obj: Primitive = self.into();
         Some(obj.into())
     }
 }
 
 impl NodeIter for CsgSphere {
-    fn nodes(&self) -> impl Iterator<Item = crate::csg_node::Node> {
+    fn nodes(&self) -> impl Iterator<Item = crate::node::Node> {
         std::iter::once(Node::PrimitiveSphere { center: self.center, radius: self.radius })
     }
 }

@@ -1,6 +1,6 @@
 use crate::{
-    csg_object::Object,
-    csg_operations::{Op, union::Union},
+    object::Object,
+    operations::{Op, union::Union},
     csg_primitives::{Primitive, sphere::CsgSphere}
 };
 

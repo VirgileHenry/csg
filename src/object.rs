@@ -1,14 +1,14 @@
 use std::num::NonZeroUsize;
 #[cfg(feature="serde")]
 use serde::{Serialize, Deserialize};
-use crate::csg_binary_object::BinObject;
-use crate::csg_binary_operations::BinOp;
-use crate::csg_traits::CsgTrait;
-use crate::csg_traits::binarize::BinarizeCsgTree;
-use crate::csg_traits::csg_tree_size::CsgTreeSize;
-use crate::csg_traits::distance_func::DistanceFunc;
-use crate::csg_modifiers::Modifier;
-use crate::csg_operations::Op;
+use crate::binary_object::BinObject;
+use crate::binary_operations::BinOp;
+use crate::traits::CsgTrait;
+use crate::traits::binarize::BinarizeCsgTree;
+use crate::traits::csg_tree_size::CsgTreeSize;
+use crate::traits::distance_func::DistanceFunc;
+use crate::modifiers::Modifier;
+use crate::operations::Op;
 use crate::csg_primitives::Primitive;
 
 /// A Csg object can be any one of a primitive, operation, binary operation, modifier.

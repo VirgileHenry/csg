@@ -3,31 +3,31 @@ use std::num::NonZeroUsize;
 #[cfg(feature="serde")]
 use serde::{Serialize, Deserialize};
 use crate::{
-    csg_binary_object::BinObject,
-    csg_traits::{distance_func::DistanceFunc, csg_tree_size::CsgTreeSize, binarize::BinarizeCsgTree, CsgTrait, node_iter::NodeIter, CsgBinTrait}, csg_node::Node
+    binary_object::BinObject,
+    traits::{distance_func::DistanceFunc, csg_tree_size::CsgTreeSize, binarize::BinarizeCsgTree, CsgTrait, node_iter::NodeIter, CsgBinTrait}, node::Node
 };
 
 use super::BinOp;
 
 #[cfg_attr(feature="serde", derive(Serialize, Deserialize))]
 #[derive(Debug, Clone)]
-pub struct BinInter {
+pub struct BinUnion {
     children: Box<(BinObject, BinObject)>,
 }
 
-impl BinInter {
+impl BinUnion {
     pub fn new(left: BinObject, right: BinObject) -> Self {
-        BinInter { children: Box::new((left, right)) }
+        BinUnion { children: Box::new((left, right)) }
     }
 }
 
-impl DistanceFunc for BinInter {
+impl DistanceFunc for BinUnion {
     fn distance_function(&self, at: cgmath::Vector3<f32>) -> f32 {
         self.children.0.distance_function(at).max(self.children.1.distance_function(at))
     }
 }
 
-impl CsgTreeSize for BinInter {
+impl CsgTreeSize for BinUnion {
     fn size(&self) -> NonZeroUsize {
         unsafe {
             NonZeroUsize::new_unchecked(
@@ -37,18 +37,18 @@ impl CsgTreeSize for BinInter {
     }
 }
 
-impl BinarizeCsgTree for BinInter {
+impl BinarizeCsgTree for BinUnion {
     fn binarize(self) -> Option<BinObject> {
         let op: BinOp = self.into();
         Some(op.into())
     }
 }
 
-impl NodeIter for BinInter {
-    fn nodes(&self) -> impl Iterator<Item = crate::csg_node::Node> {
-        std::iter::once(Node::OpBinInter).chain(self.children.0.nodes()).chain(self.children.1.nodes())
+impl NodeIter for BinUnion {
+    fn nodes(&self) -> impl Iterator<Item = crate::node::Node> {
+        std::iter::once(Node::OpBinUnion).chain(self.children.0.nodes()).chain(self.children.1.nodes())
     }
 }
 
-impl CsgTrait for BinInter {}
-impl CsgBinTrait for BinInter {}
+impl CsgTrait for BinUnion {}
+impl CsgBinTrait for BinUnion {}

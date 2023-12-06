@@ -1,4 +1,4 @@
-use crate::csg_node::Node;
+use crate::node::Node;
 
 /// An iterator over the nodes of the csg tree object.
 /// The iterator guarantees to be in order, this is,

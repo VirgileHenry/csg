@@ -11,7 +11,7 @@ use std::num::NonZeroUsize;
 
 #[cfg(feature="serde")]
 use serde::{Serialize, Deserialize};
-use crate::{csg_traits::{distance_func::DistanceFunc, csg_tree_size::CsgTreeSize, binarize::BinarizeCsgTree, CsgTrait, node_iter::NodeIter}, csg_binary_object::BinObject};
+use crate::{traits::{distance_func::DistanceFunc, csg_tree_size::CsgTreeSize, binarize::BinarizeCsgTree, CsgTrait, node_iter::NodeIter}, binary_object::BinObject};
 
 use self::sphere::CsgSphere;
 
@@ -37,13 +37,13 @@ impl CsgTreeSize for Primitive {
 }
 
 impl BinarizeCsgTree for Primitive {
-    fn binarize(self) -> Option<crate::csg_binary_object::BinObject> {
+    fn binarize(self) -> Option<crate::binary_object::BinObject> {
         Some(BinObject::Primitive(self))
     }
 }
 
 impl NodeIter for Primitive {
-    fn nodes(&self) -> impl Iterator<Item = crate::csg_node::Node> {
+    fn nodes(&self) -> impl Iterator<Item = crate::node::Node> {
         match self {
             Primitive::Sphere(sphere) => sphere.nodes(),
         }

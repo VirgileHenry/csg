@@ -1,11 +1,11 @@
-pub mod csg_binary_object;
-pub mod csg_binary_operations;
-pub mod csg_modifiers;
-pub mod csg_node;
-pub mod csg_object;
-pub mod csg_operations;
+pub mod binary_object;
+pub mod binary_operations;
+pub mod modifiers;
+pub mod node;
+pub mod object;
+pub mod operations;
 pub mod csg_primitives;
-pub mod csg_traits;
+pub mod traits;
 
 #[cfg(test)]
 mod test;
