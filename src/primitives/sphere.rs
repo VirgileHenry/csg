@@ -18,6 +18,13 @@ impl CsgSphere {
             radius,
         }
     }
+
+    pub fn at(self, at: glam::Vec3) -> Self {
+        CsgSphere {
+            center: at,
+            ..self
+        }
+    }   
 }
 
 impl DistanceFunc for CsgSphere {
