@@ -5,7 +5,9 @@ use crate::binary_object::BinObject;
 use crate::binary_operations::BinOp;
 use crate::traits::CsgTrait;
 use crate::traits::binarize::BinarizeCsgTree;
-use crate::traits::tree_size::CsgTreeSize;
+use crate::traits::bounding_cube::BoundingCube;
+use crate::traits::tree_height::TreeHeight;
+use crate::traits::tree_size::TreeSize;
 use crate::traits::distance_func::DistanceFunc;
 use crate::modifiers::Modifier;
 use crate::operations::Op;
@@ -46,13 +48,35 @@ impl BinarizeCsgTree for Object {
     }
 }
 
-impl CsgTreeSize for Object {
+impl TreeSize for Object {
     fn size(&self) -> NonZeroUsize {
         match self {
             Object::Primitive(_) => unsafe { NonZeroUsize::new_unchecked(1) },
             Object::Operation(op) => op.size(),
             Object::BinaryOperation(op) => op.size(),
             Object::Modifier(mo) => mo.size(),
+        }
+    }
+}
+
+impl TreeHeight for Object {
+    fn height(&self) -> NonZeroUsize {
+        match self {
+            Object::Primitive(_) => unsafe { NonZeroUsize::new_unchecked(1) },
+            Object::Operation(op) => op.height(),
+            Object::BinaryOperation(op) => op.height(),
+            Object::Modifier(mo) => mo.height(),
+        }
+    }
+}
+
+impl BoundingCube for Object {
+    fn bounding_cube(&self) -> f32 {
+        match self {
+            Object::Primitive(pr) => pr.bounding_cube(),
+            Object::Operation(op) => op.bounding_cube(),
+            Object::BinaryOperation(op) => op.bounding_cube(),
+            Object::Modifier(mo) => mo.bounding_cube(),
         }
     }
 }

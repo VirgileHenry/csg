@@ -1,7 +1,7 @@
 use crate::{
     object::Object,
     operations::{Op, union::Union},
-    primitives::{Primitive, sphere::CsgSphere}
+    primitives::{Primitive, sphere::Sphere}
 };
 
 fn assert_object_is_serialize_json_consistent(obj: Object) {
@@ -39,9 +39,9 @@ fn assert_object_is_serialize_bin_consistent(obj: Object) {
 #[test]
 fn serialize_json() {
     let obj = Object::Operation(Op::Union(Union::new(vec![
-        Object::Primitive(Primitive::Sphere(CsgSphere::centered(3.))),
-        Object::Primitive(Primitive::Sphere(CsgSphere::centered(1.))),
-        Object::Primitive(Primitive::Sphere(CsgSphere::centered(2.))),
+        Object::Primitive(Primitive::Sphere(Sphere::centered(3.))),
+        Object::Primitive(Primitive::Sphere(Sphere::centered(1.))),
+        Object::Primitive(Primitive::Sphere(Sphere::centered(2.))),
     ])));
 
     assert_object_is_serialize_json_consistent(obj);
@@ -50,9 +50,9 @@ fn serialize_json() {
 #[test]
 fn serialize_binary() {
     let obj = Object::Operation(Op::Union(Union::new(vec![
-        Object::Primitive(Primitive::Sphere(CsgSphere::centered(3.))),
-        Object::Primitive(Primitive::Sphere(CsgSphere::centered(1.))),
-        Object::Primitive(Primitive::Sphere(CsgSphere::centered(2.))),
+        Object::Primitive(Primitive::Sphere(Sphere::centered(3.))),
+        Object::Primitive(Primitive::Sphere(Sphere::centered(1.))),
+        Object::Primitive(Primitive::Sphere(Sphere::centered(2.))),
     ])));
 
     assert_object_is_serialize_bin_consistent(obj);

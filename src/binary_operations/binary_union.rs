@@ -4,7 +4,7 @@ use std::num::NonZeroUsize;
 use serde::{Serialize, Deserialize};
 use crate::{
     binary_object::BinObject,
-    traits::{distance_func::DistanceFunc, tree_size::CsgTreeSize, binarize::BinarizeCsgTree, CsgTrait, node_iter::NodeIter, CsgBinTrait}, node::Node
+    traits::{distance_func::DistanceFunc, tree_size::TreeSize, binarize::BinarizeCsgTree, CsgTrait, node_iter::NodeIter, CsgBinTrait, tree_height::TreeHeight, bounding_cube::BoundingCube}, node::Node
 };
 
 use super::BinOp;
@@ -27,7 +27,7 @@ impl DistanceFunc for BinUnion {
     }
 }
 
-impl CsgTreeSize for BinUnion {
+impl TreeSize for BinUnion {
     fn size(&self) -> NonZeroUsize {
         unsafe {
             NonZeroUsize::new_unchecked(
@@ -47,6 +47,18 @@ impl BinarizeCsgTree for BinUnion {
 impl NodeIter for BinUnion {
     fn nodes(&self) -> impl Iterator<Item = crate::node::Node> {
         std::iter::once(Node::OpBinUnion).chain(self.children.0.nodes()).chain(self.children.1.nodes())
+    }
+}
+
+impl TreeHeight for BinUnion {
+    fn height(&self) -> NonZeroUsize {
+        self.children.0.height().max(self.children.1.height()).saturating_add(1)
+    }
+}
+
+impl BoundingCube for BinUnion {
+    fn bounding_cube(&self) -> f32 {
+        self.children.0.bounding_cube().max(self.children.1.bounding_cube())
     }
 }
 

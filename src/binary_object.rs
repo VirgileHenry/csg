@@ -6,7 +6,7 @@ use serde::{Serialize, Deserialize};
 use crate::{
     modifiers::Modifier,
     binary_operations::BinOp,
-    primitives::Primitive, traits::{distance_func::DistanceFunc, tree_size::CsgTreeSize, binarize::BinarizeCsgTree, CsgTrait, node_iter::NodeIter, CsgBinTrait},
+    primitives::Primitive, traits::{distance_func::DistanceFunc, tree_size::TreeSize, binarize::BinarizeCsgTree, CsgTrait, node_iter::NodeIter, CsgBinTrait, tree_height::TreeHeight, bounding_cube::BoundingCube},
 };
 
 
@@ -31,7 +31,7 @@ impl DistanceFunc for BinObject {
     }
 }
 
-impl CsgTreeSize for BinObject {
+impl TreeSize for BinObject {
     fn size(&self) -> NonZeroUsize {
         match self {
             BinObject::Primitive(_) => unsafe { NonZeroUsize::new_unchecked(1) },
@@ -59,6 +59,27 @@ impl NodeIter for BinObject {
         }
     }
 }
+
+impl TreeHeight for BinObject {
+    fn height(&self) -> NonZeroUsize {
+        match self {
+            BinObject::BinaryOperation(bo) => bo.height(),
+            BinObject::Modifier(mo) => mo.height(),
+            BinObject::Primitive(pr) => pr.height(),
+        }
+    }
+}
+
+impl BoundingCube for BinObject {
+    fn bounding_cube(&self) -> f32 {
+        match self {
+            BinObject::BinaryOperation(bo) => bo.bounding_cube(),
+            BinObject::Modifier(mo) => mo.bounding_cube(),
+            BinObject::Primitive(pr) => pr.bounding_cube(),
+        }
+    }
+}
+
 
 impl CsgTrait for BinObject {}
 impl CsgBinTrait for BinObject {}

@@ -5,7 +5,7 @@ use std::num::NonZeroUsize;
 
 #[cfg(feature="serde")]
 use serde::{Serialize, Deserialize};
-use crate::{binary_object::BinObject, traits::{distance_func::DistanceFunc, binarize::BinarizeCsgTree, tree_size::CsgTreeSize, CsgTrait}};
+use crate::{binary_object::BinObject, traits::{distance_func::DistanceFunc, binarize::BinarizeCsgTree, tree_size::TreeSize, CsgTrait, tree_height::TreeHeight, bounding_cube::BoundingCube}};
 use self::{union::Union, intersection::Inter};
 
 /// Trait for any Csg operation object.
@@ -34,11 +34,29 @@ impl BinarizeCsgTree for Op {
     }
 }
 
-impl CsgTreeSize for Op {
+impl TreeSize for Op {
     fn size(&self) -> NonZeroUsize {
         match self {
             Op::Union(union) => union.size(),
             Op::Intersection(inter) => inter.size(),
+        }
+    }
+}
+
+impl TreeHeight for Op {
+    fn height(&self) -> NonZeroUsize {
+        match self {
+            Op::Union(union) => union.height(),
+            Op::Intersection(inter) => inter.height(),
+        }
+    }
+}
+
+impl BoundingCube for Op {
+    fn bounding_cube(&self) -> f32 {
+        match self {
+            Op::Union(union) => union.bounding_cube(),
+            Op::Intersection(inter) => inter.bounding_cube(),
         }
     }
 }

@@ -11,15 +11,15 @@ use std::num::NonZeroUsize;
 
 #[cfg(feature="serde")]
 use serde::{Serialize, Deserialize};
-use crate::{traits::{distance_func::DistanceFunc, tree_size::CsgTreeSize, binarize::BinarizeCsgTree, CsgTrait, node_iter::NodeIter}, binary_object::BinObject};
+use crate::{traits::{distance_func::DistanceFunc, tree_size::TreeSize, binarize::BinarizeCsgTree, CsgTrait, node_iter::NodeIter, tree_height::TreeHeight, bounding_cube::BoundingCube}, binary_object::BinObject};
 
-use self::sphere::CsgSphere;
+use self::sphere::Sphere;
 
 /// trait for any Csg primitive.
 #[cfg_attr(feature="serde", derive(Serialize, Deserialize))]
 #[derive(Debug, Clone)]
 pub enum Primitive {
-    Sphere(CsgSphere),
+    Sphere(Sphere),
 }
 
 impl DistanceFunc for Primitive {
@@ -30,7 +30,7 @@ impl DistanceFunc for Primitive {
     }
 }
 
-impl CsgTreeSize for Primitive {
+impl TreeSize for Primitive {
     fn size(&self) -> std::num::NonZeroUsize {
         unsafe { NonZeroUsize::new_unchecked(1) }
     }
@@ -50,10 +50,24 @@ impl NodeIter for Primitive {
     }
 }
 
+impl TreeHeight for Primitive {
+    fn height(&self) -> NonZeroUsize {
+        unsafe { NonZeroUsize::new_unchecked(1) }
+    }
+}
+
+impl BoundingCube for Primitive {
+    fn bounding_cube(&self) -> f32 {
+        match self {
+            Primitive::Sphere(sphere) => sphere.bounding_cube(),
+        }
+    }
+}
+
 impl CsgTrait for Primitive {}
 
-impl From<CsgSphere> for Primitive {
-    fn from(value: CsgSphere) -> Self {
+impl From<Sphere> for Primitive {
+    fn from(value: Sphere) -> Self {
         Primitive::Sphere(value)
     }
 }

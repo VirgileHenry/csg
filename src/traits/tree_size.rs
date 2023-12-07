@@ -1,5 +1,5 @@
 use std::num::NonZeroUsize;
 
-pub trait CsgTreeSize {
+pub trait TreeSize {
     fn size(&self) -> NonZeroUsize; 
 }

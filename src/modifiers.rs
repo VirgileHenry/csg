@@ -3,7 +3,7 @@ use std::num::NonZeroUsize;
 #[cfg(feature="serde")]
 use serde::{Serialize, Deserialize};
 
-use crate::{binary_object::BinObject, traits::{distance_func::DistanceFunc, tree_size::CsgTreeSize, binarize::BinarizeCsgTree, CsgTrait, CsgBinTrait, node_iter::NodeIter}, node::Node};
+use crate::{binary_object::BinObject, traits::{distance_func::DistanceFunc, tree_size::TreeSize, binarize::BinarizeCsgTree, CsgTrait, CsgBinTrait, node_iter::NodeIter, tree_height::TreeHeight, bounding_cube::BoundingCube}, node::Node};
 
 /// Trait for any Csg operation object.
 #[cfg_attr(feature="serde", derive(Serialize, Deserialize))]
@@ -20,7 +20,7 @@ impl<T: DistanceFunc> DistanceFunc for Modifier<T> {
     }
 }
 
-impl<T: CsgTreeSize> CsgTreeSize for Modifier<T> {
+impl<T: TreeSize> TreeSize for Modifier<T> {
     fn size(&self) -> NonZeroUsize {
         match self {
             Modifier::Rounding(obj, _) => unsafe { NonZeroUsize::new_unchecked(1 + obj.size().get()) } 
@@ -44,5 +44,20 @@ impl<T: NodeIter> NodeIter for Modifier<T> {
     }
 }
 
+impl<T: CsgTrait> TreeHeight for Modifier<T> {
+    fn height(&self) -> NonZeroUsize {
+        match self {
+            Modifier::Rounding(obj, _) => obj.height().saturating_add(1),
+        }
+    }
+}
+
+impl<T: CsgTrait> BoundingCube for Modifier<T> {
+    fn bounding_cube(&self) -> f32 {
+        match self {
+            Modifier::Rounding(obj, r) => obj.bounding_cube() + r,
+        }
+    }
+}
 impl<T: CsgTrait> CsgTrait for Modifier<T> {}
 impl<T: CsgBinTrait> CsgBinTrait for Modifier<T> {}

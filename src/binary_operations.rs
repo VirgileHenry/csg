@@ -7,7 +7,7 @@ use std::num::NonZeroUsize;
 #[cfg(feature="serde")]
 use serde::{Serialize, Deserialize};
 
-use crate::traits::{distance_func::DistanceFunc, tree_size::CsgTreeSize, binarize::BinarizeCsgTree, CsgTrait, node_iter::NodeIter, CsgBinTrait};
+use crate::traits::{distance_func::DistanceFunc, tree_size::TreeSize, binarize::BinarizeCsgTree, CsgTrait, node_iter::NodeIter, CsgBinTrait, tree_height::TreeHeight, bounding_cube::BoundingCube};
 
 use self::{substraction::Cut, binary_intersection::BinInter, binary_union::BinUnion};
 
@@ -30,7 +30,7 @@ impl DistanceFunc for BinOp {
     }
 }
 
-impl CsgTreeSize for BinOp {
+impl TreeSize for BinOp {
     fn size(&self) -> NonZeroUsize {
         match self {
             BinOp::Substraction(sub) => sub.size(),
@@ -55,6 +55,26 @@ impl NodeIter for BinOp {
             BinOp::Substraction(sub) => sub.nodes().collect::<Vec<_>>().into_iter(),
             BinOp::Intersection(int) => int.nodes().collect::<Vec<_>>().into_iter(),
             BinOp::Union(uni) => uni.nodes().collect::<Vec<_>>().into_iter(),
+        }
+    }
+}
+
+impl TreeHeight for BinOp {
+    fn height(&self) -> NonZeroUsize {
+        match self {
+            BinOp::Intersection(inter) => inter.height(),
+            BinOp::Substraction(sub) => sub.height(),
+            BinOp::Union(uni) => uni.height(),
+        }
+    }
+}
+
+impl BoundingCube for BinOp {
+    fn bounding_cube(&self) -> f32 {
+        match self {
+            BinOp::Intersection(inter) => inter.bounding_cube(),
+            BinOp::Substraction(sub) => sub.bounding_cube(),
+            BinOp::Union(uni) => uni.bounding_cube(),
         }
     }
 }

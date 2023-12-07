@@ -8,7 +8,7 @@ use crate::{
     binary_operations::{
         BinOp, binary_intersection::BinInter,
         
-    }, traits::{distance_func::DistanceFunc, binarize::BinarizeCsgTree, tree_size::CsgTreeSize, CsgTrait},
+    }, traits::{distance_func::DistanceFunc, binarize::BinarizeCsgTree, tree_size::TreeSize, CsgTrait, tree_height::TreeHeight, bounding_cube::BoundingCube},
 };
 
 #[cfg_attr(feature="serde", derive(Serialize, Deserialize))]
@@ -55,12 +55,27 @@ impl BinarizeCsgTree for Inter {
     }
 }
 
-impl CsgTreeSize for Inter {
+impl TreeSize for Inter {
     fn size(&self) -> NonZeroUsize {
         let childs_size: usize = self.children.iter().map(|o| o.size().get()).sum();
         unsafe { NonZeroUsize::new_unchecked(1 + childs_size) }
     }
 }
+
+impl TreeHeight for Inter {
+    fn height(&self) -> NonZeroUsize {
+        self.children.iter().map(|o| o.height())
+            .fold(unsafe { NonZeroUsize::new_unchecked(1) }, |a, b| a.max(b))
+    }
+}
+
+impl BoundingCube for Inter {
+    fn bounding_cube(&self) -> f32 {
+        self.children.iter().map(|o| o.bounding_cube())
+            .fold(f32::INFINITY, |a, b| a.min(b))
+    }
+}
+
 
 
 impl CsgTrait for Inter {}
