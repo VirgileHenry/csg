@@ -4,7 +4,7 @@ use std::num::NonZeroUsize;
 use serde::{Serialize, Deserialize};
 use crate::{
     binary_object::BinObject,
-    traits::{distance_func::DistanceFunc, csg_tree_size::CsgTreeSize, binarize::BinarizeCsgTree, CsgTrait, node_iter::NodeIter, CsgBinTrait}, node::Node
+    traits::{distance_func::DistanceFunc, tree_size::CsgTreeSize, binarize::BinarizeCsgTree, CsgTrait, node_iter::NodeIter, CsgBinTrait}, node::Node
 };
 
 use super::BinOp;

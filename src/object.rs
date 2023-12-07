@@ -5,7 +5,7 @@ use crate::binary_object::BinObject;
 use crate::binary_operations::BinOp;
 use crate::traits::CsgTrait;
 use crate::traits::binarize::BinarizeCsgTree;
-use crate::traits::csg_tree_size::CsgTreeSize;
+use crate::traits::tree_size::CsgTreeSize;
 use crate::traits::distance_func::DistanceFunc;
 use crate::modifiers::Modifier;
 use crate::operations::Op;

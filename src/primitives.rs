@@ -11,7 +11,7 @@ use std::num::NonZeroUsize;
 
 #[cfg(feature="serde")]
 use serde::{Serialize, Deserialize};
-use crate::{traits::{distance_func::DistanceFunc, csg_tree_size::CsgTreeSize, binarize::BinarizeCsgTree, CsgTrait, node_iter::NodeIter}, binary_object::BinObject};
+use crate::{traits::{distance_func::DistanceFunc, tree_size::CsgTreeSize, binarize::BinarizeCsgTree, CsgTrait, node_iter::NodeIter}, binary_object::BinObject};
 
 use self::sphere::CsgSphere;
 

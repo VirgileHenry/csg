@@ -8,7 +8,7 @@ use crate::{
     binary_operations::{
         BinOp, binary_intersection::BinInter,
         
-    }, traits::{distance_func::DistanceFunc, binarize::BinarizeCsgTree, csg_tree_size::CsgTreeSize, CsgTrait},
+    }, traits::{distance_func::DistanceFunc, binarize::BinarizeCsgTree, tree_size::CsgTreeSize, CsgTrait},
 };
 
 #[cfg_attr(feature="serde", derive(Serialize, Deserialize))]

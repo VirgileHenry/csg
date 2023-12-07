@@ -5,7 +5,7 @@ use std::num::NonZeroUsize;
 
 #[cfg(feature="serde")]
 use serde::{Serialize, Deserialize};
-use crate::{binary_object::BinObject, traits::{distance_func::DistanceFunc, binarize::BinarizeCsgTree, csg_tree_size::CsgTreeSize, CsgTrait}};
+use crate::{binary_object::BinObject, traits::{distance_func::DistanceFunc, binarize::BinarizeCsgTree, tree_size::CsgTreeSize, CsgTrait}};
 use self::{union::Union, intersection::Inter};
 
 /// Trait for any Csg operation object.

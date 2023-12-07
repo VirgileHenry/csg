@@ -5,7 +5,7 @@ use serde::{Serialize, Deserialize};
 use crate::{
     object::Object,
     binary_object::BinObject,
-    traits::{distance_func::DistanceFunc, binarize::BinarizeCsgTree, csg_tree_size::CsgTreeSize, CsgTrait}, binary_operations::{BinOp, binary_union::BinUnion}
+    traits::{distance_func::DistanceFunc, binarize::BinarizeCsgTree, tree_size::CsgTreeSize, CsgTrait}, binary_operations::{BinOp, binary_union::BinUnion}
 };
 
 #[cfg_attr(feature="serde", derive(Serialize, Deserialize))]

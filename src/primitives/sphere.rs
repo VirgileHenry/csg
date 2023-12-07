@@ -1,6 +1,6 @@
 #[cfg(feature="serde")]
 use serde::{Serialize, Deserialize};
-use crate::{traits::{distance_func::DistanceFunc, csg_tree_size::CsgTreeSize, binarize::BinarizeCsgTree, node_iter::NodeIter, CsgTrait, CsgBinTrait}, node::Node};
+use crate::{traits::{distance_func::DistanceFunc, tree_size::CsgTreeSize, binarize::BinarizeCsgTree, node_iter::NodeIter, CsgTrait, CsgBinTrait}, node::Node};
 
 use super::Primitive;
 
