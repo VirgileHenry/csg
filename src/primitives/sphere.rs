@@ -1,9 +1,19 @@
 use std::num::NonZeroUsize;
-
 #[cfg(feature="serde")]
 use serde::{Serialize, Deserialize};
-use crate::{traits::{distance_func::DistanceFunc, tree_size::TreeSize, binarize::BinarizeCsgTree, node_iter::NodeIter, CsgTrait, CsgBinTrait, tree_height::TreeHeight, bounding_cube::BoundingCube}, node::Node};
-
+use crate::{
+    traits::{
+        distance_func::DistanceFunc,
+        tree_size::TreeSize,
+        binarize::BinarizeCsgTree,
+        node_iter::NodeIter,
+        CsgTrait,
+        CsgBinTrait,
+        tree_height::TreeHeight,
+        bounding_cube::BoundingCube
+    },
+    node::Node
+};
 use super::Primitive;
 
 #[cfg_attr(feature="serde", derive(Serialize, Deserialize))]

@@ -9,6 +9,11 @@ pub enum Node {
         center: glam::Vec3,
         radius: f32,
     },
+    PrimitiveCube {
+        position: glam::Vec3,
+        rotation: glam::Quat,
+        scale: glam::Vec3,
+    },
 
     // binary operations (two following children)
     OpBinCut,
@@ -25,10 +30,11 @@ impl Node {
     pub fn id(&self) -> u8 {
         match &self {
             Node::PrimitiveSphere { .. } => 1,
-            Node::OpBinCut => 2,
-            Node::OpBinInter => 3,
-            Node::OpBinUnion => 4,
-            Node::ModRounder { .. } => 5,
+            Node::PrimitiveCube { .. } => 2,
+            Node::OpBinCut => 20,
+            Node::OpBinInter => 21,
+            Node::OpBinUnion => 22,
+            Node::ModRounder { .. } => 40,
         }
     }
 }
