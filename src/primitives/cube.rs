@@ -24,6 +24,36 @@ pub struct Cube {
     scale: glam::Vec3,
 }
 
+impl Cube {
+    pub fn origin() -> Cube {
+        Cube {
+            position: glam::Vec3::ZERO,
+            rotation: glam::Quat::IDENTITY,
+            scale: glam::Vec3::ONE,
+        }
+    }
+
+    pub fn at(self, at: glam::Vec3) -> Cube {
+        Cube {
+            position: at,
+            ..self
+        }
+    }
+
+    pub fn rotated(self, rot: glam::Quat) -> Cube {
+        Cube {
+            rotation: rot, 
+            ..self
+        }
+    }
+
+    pub fn scaled(self, scale: glam::Vec3) -> Cube {
+        Cube {
+            scale,
+            ..self
+        }
+    }
+}
 
 impl DistanceFunc for Cube {
     fn distance_function(&self, at: glam::Vec3) -> f32 {
