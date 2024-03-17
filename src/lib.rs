@@ -50,14 +50,14 @@ impl<T> LoadedCSG<T> {
     pub fn height(&self) -> usize {
         unimplemented!()
     }
-    pub fn nodes(&self) -> impl Iterator<Item = &node::CsgNode> {
+    pub fn nodes(&self) -> impl DoubleEndedIterator<Item = &node::CsgNode> {
         self.csg_tree.iter().map(|(node, _)| node)
     }
-    pub fn payloads(&self) -> impl Iterator<Item = &T> {
+    pub fn payloads(&self) -> impl DoubleEndedIterator<Item = &T> {
         self.csg_tree.iter().map(|(_, payload)| payload)
     }
     pub fn pretty_print<W: std::io::Write>(&self, output: &mut W) -> Result<(), std::io::Error> {
-        for (node, _) in self  .csg_tree.iter() {
+        for (node, _) in self.csg_tree.iter() {
             write!(output, "{node:?}\n")?;
         }
         Ok(())
