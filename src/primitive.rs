@@ -13,6 +13,15 @@ pub enum Primitive {
 }
 
 impl Primitive {
+    pub(crate) const VAR_COUNT: u32 = 2;
+
+    pub(crate) fn id(&self) -> u32 {
+        match self {
+            Primitive::Sphere { .. } => 0,
+            Primitive::Cube { .. } => 1,
+        }
+    } 
+
     pub fn sphere(radius: crate::Float) -> Primitive {
         Primitive::Sphere { 
             radius,
