@@ -7,8 +7,6 @@ pub enum BinOp {
 }
 
 impl BinOp {
-    pub(crate) const VAR_COUNT: u32 = 3;
-
     pub(crate) fn id(&self) -> u32 {
         match self {
             BinOp::Union => 0,
